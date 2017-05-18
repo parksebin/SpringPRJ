@@ -26,4 +26,6 @@ public interface NoticeMapper {
 	//게시판 글 삭제
 	void deleteNoticeInfo(NoticeDTO pDTO) throws Exception;
 	
+	//답글 등록
+	void InsertNoticeInfo2(NoticeDTO pDTO) throws Exception;
 }

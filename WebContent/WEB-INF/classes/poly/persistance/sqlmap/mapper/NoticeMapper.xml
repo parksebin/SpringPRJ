@@ -63,5 +63,22 @@
 		WHERE NOTICE_SEQ = #{notice_seq}	
 			
 	</delete>
+	
+	
+	<!-- 답글 등록 쿼리 -->
+	<insert id="InsertNoticeInfo2" parameterType="NoticeDTO">
+		INSERT INTO NOTICE
+		(
+			NOTICE_SEQ, USER_ID, TITLE, POS, DEPTH		
+		)
+		VALUES(
+		(SELECT NVL(MAX(A.NOTICE_SEQ),0)+1 FROM NOTICE A),
+		#{user_id},
+		#{title},
+		0,
+		0
+		)
+			
+	</insert>
 			
 </mapper>

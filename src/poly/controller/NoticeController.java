@@ -22,6 +22,7 @@ import poly.util.CmmUtil;
  * Controller 선언해야만 Spring 프레임워크에서 Controller인지 인식 가능
  * 자바 서블릿 역할 수행
  * */
+
 @Controller
 public class NoticeController {
 	private Logger log = Logger.getLogger(this.getClass());
@@ -76,6 +77,7 @@ public class NoticeController {
 	 * WEB-INF 밑에 존재하는 JSP는 직접 호출할 수 없음 
 	 * 따라서 WEB-INF 밑에 존재하는 JSP를 호출하기 위해서는 반드시 Controller 등록해야함
 	 * */
+	
 	@RequestMapping(value="notice/NoticeReg", method=RequestMethod.GET)
 	public String NoticeReg(HttpServletRequest request, HttpServletResponse response, 
 			ModelMap model) throws Exception {
@@ -85,6 +87,69 @@ public class NoticeController {
 		log.info(this.getClass().getName() + ".NoticeReg end!");
 		
 		return "/notice/NoticeReg";
+	}
+	
+
+	@RequestMapping(value="notice/NoticeReg2", method=RequestMethod.POST)
+	public String NoticeReg2(HttpServletRequest request, HttpServletResponse response, 
+			ModelMap model,HttpSession session) throws Exception {
+		
+		log.info(this.getClass().getName() + ".NoticeReg2 start!");
+		String msg = "";
+		
+		try{
+			/*
+			 * 게시판 글 등록되기 위해 사용되는 form객체의 하위 input 객체 등을 받아오기 위해 사용함
+			 * */
+			String user_id = CmmUtil.nvl((String)session.getAttribute("SESSION_USER_ID")); //아이디
+			String title = CmmUtil.nvl(request.getParameter("title")); //제목
+				
+			/*
+			 * #######################################################
+			 * 	 반드시, 값을 받았으면, 꼭 로그를 찍어서 값이 제대로 들어오는지 파악해야함
+			 * 						반드시 작성할 것
+			 * #######################################################
+			 * */
+			log.info("user_id : "+ user_id);
+			log.info("title : "+ title);
+					
+			
+			NoticeDTO pDTO = new NoticeDTO();
+			
+			pDTO.setUser_id(user_id);
+			pDTO.setTitle(title);
+	
+			
+			/*
+			 * 게시글 등록하기위한 비즈니스 로직을 호출
+			 * */
+			noticeService.InsertNoticeInfo2(pDTO);
+
+			//저장이 완료되면 사용자에게 보여줄 메시지
+			msg = "등록되었습니다.";
+			
+			
+			//변수 초기화(메모리 효율화 시키기 위해 사용함)
+			pDTO = null;
+			
+		}catch(Exception e){
+			
+			//저장이 실패되면 사용자에게 보여줄 메시지			
+			msg = "실패하였습니다. : "+ e.toString();
+			log.info(e.toString());
+			e.printStackTrace();
+			
+		}finally{
+			log.info(this.getClass().getName() + ".NoticeInsert end!");
+			
+			//결과 메시지 전달하기
+			model.addAttribute("msg", msg);
+			
+		}
+		
+		log.info(this.getClass().getName() + ".NoticeReg2 end!");
+		
+		return "/notice/MsgToList";
 	}
 	
 	

@@ -51,4 +51,10 @@ public class NoticeService implements INoticeService{
 		noticeMapper.deleteNoticeInfo(pDTO);
 		
 	}
+	
+	@Override
+	public void InsertNoticeInfo2(NoticeDTO pDTO) throws Exception {
+		noticeMapper.InsertNoticeInfo2(pDTO);
+	}
+	
 }

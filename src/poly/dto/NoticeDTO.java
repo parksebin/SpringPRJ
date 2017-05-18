@@ -16,7 +16,6 @@ public class NoticeDTO {
 	private String reg_dt; // 등록일
 	private String chg_id; // 수정자 아이디
 	private String chg_dt; // 수정일
-
 	private String user_name; // 등록자명
 
 	public String getUser_name() {

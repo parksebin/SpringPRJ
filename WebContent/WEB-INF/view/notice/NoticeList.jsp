@@ -7,6 +7,7 @@
 <%@ page import="java.util.HashMap"%>    
 <%
 session.setAttribute("SESSION_USER_ID", "USER01"); //세션 강제 적용, 로그인된 상태로 보여주기 위함
+String SESSION_USER_ID = CmmUtil.nvl((String)session.getAttribute("SESSION_USER_ID"));
 
 List<NoticeDTO> rList =	(List<NoticeDTO>)request.getAttribute("rList");
 
@@ -32,6 +33,7 @@ function doDetail(seq){
 </script>	
 </head>
 <body>
+<form name="f" method="post" action="/notice/NoticeReg2.do" target= "ifrPrc" onsubmit="return doSubmit(this);">
 <h2>공지사항</h2>
 <hr/>
 <br/>
@@ -54,30 +56,29 @@ for (int i=0;i<rList.size();i++){
 	
 %>
 <tr>
+<td>
+<input type="checkbox" name="check">
+</td>
 	<td align="center">
-	<%
-	//공지글이라면, [공지]표시 
-	if (CmmUtil.nvl(rDTO.getNotice_yn()).equals("1")){
-		out.print("<b>[공지]</b>");
-		
-	//공지글이 아니라면, 글번호 보여주기 		
-	}else{
-		out.print(CmmUtil.nvl(rDTO.getNotice_seq()));
-			
-	}
-	%></td>
+	
+<input type="text" width="200" name="title"><br/>
+		<input type="submit" value="답글등록">
+</td>
 	<td align="center">
 		<a href="javascript:doDetail('<%=CmmUtil.nvl(rDTO.getNotice_seq())%>');">
 		<%=CmmUtil.nvl(rDTO.getTitle()) %></a>
 	</td>
 	<td align="center"><%=CmmUtil.nvl(rDTO.getRead_cnt()) %></td>
-	<td align="center"><%=CmmUtil.nvl(rDTO.getUser_name()) %></td>
+	<td align="center"><%=CmmUtil.nvl(rDTO.getUser_id()) %></td>
 	<td align="center"><%=CmmUtil.nvl(rDTO.getReg_dt()) %></td>
 </tr>
 <%
 }
 %>
 </table>
+</form>
 <a href="/notice/NoticeReg.do">[글쓰기]</a>
+<a href="/notice/NoticeDelete.do">[삭제]</a>
+
 </body>
 </html>

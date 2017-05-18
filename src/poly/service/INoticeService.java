@@ -18,4 +18,6 @@ public interface INoticeService {
 	
 	void deleteNoticeInfo(NoticeDTO pDTO) throws Exception;
 	
+	void InsertNoticeInfo2(NoticeDTO pDTO) throws Exception;
+	
 }
